@@ -1,59 +1,54 @@
+using ChatCase.Framework.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ChatCase.Api
 {
+    /// <summary>
+    /// Represents startup class of application
+    /// </summary>
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        #region Fields
+
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        #endregion
+
+        #region Ctor
+
+        public Startup(IConfiguration configuration,
+            IWebHostEnvironment webHostEnvironment)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
         }
 
-        public IConfiguration Configuration { get; }
+        #endregion
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        #region Configures
+
+        /// <summary>
+        /// Add services to the application and configure service provider
+        /// </summary>
+        /// <param name="services">Collection of service descriptors</param>
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ChatCase.Api", Version = "v1" });
-            });
+            services.ConfigureApplicationServices(_configuration, _webHostEnvironment);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <summary>
+        /// Configure the application HTTP request pipeline
+        /// </summary>
+        /// <param name="application">Builder for configuring an application's request pipeline</param>
+        public void Configure(IApplicationBuilder application)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ChatCase.Api v1"));
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            application.ConfigureRequestPipeline();
         }
+
+        #endregion
     }
 }
