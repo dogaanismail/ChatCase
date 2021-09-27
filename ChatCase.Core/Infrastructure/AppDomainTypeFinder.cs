@@ -124,7 +124,7 @@ namespace ChatCase.Core.Infrastructure
                 try
                 {
                     var an = AssemblyName.GetAssemblyName(dllPath);
-                    if (Matches(an.FullName) && !loadedAssemblyNames.Contains(an.FullName) && an.Name != "BasketCase.Api.Views")
+                    if (Matches(an.FullName) && !loadedAssemblyNames.Contains(an.FullName) && an.Name != "ChatCase.Api.Views")
                     {
                         App.Load(an);
                     }
