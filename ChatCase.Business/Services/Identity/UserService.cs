@@ -1,9 +1,12 @@
 ﻿using ChatCase.Business.Interfaces.Identity;
+using ChatCase.Business.Services.Logging;
 using ChatCase.Core.Domain.Identity;
 using ChatCase.Domain.Common;
 using ChatCase.Domain.Dto.Request.Identity;
 using ChatCase.Domain.Dto.Response.Identity;
 using Microsoft.AspNetCore.Identity;
+using MongoDB.Bson;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +54,7 @@ namespace ChatCase.Business.Services.Identity
             {
                 AppUser userEntity = new()
                 {
+                    Id = ObjectId.GenerateNewId().ToString(),
                     UserName = model.UserName,
                     Email = model.Email
                 };
@@ -59,8 +63,7 @@ namespace ChatCase.Business.Services.Identity
 
                 if (!result.Succeeded && result.Errors != null && result.Errors.Any())
                 {
-                    //_ = _logService.InsertLogAsync(LogLevel.Error, $"UserService- Register Error", JsonConvert.SerializeObject(result));
-
+                    LoggerFactory.DatabaseLogManager().Error($"UserService- RegisterAsync error: {JsonConvert.SerializeObject(result)}");
                     serviceResponse.Warnings = result.Errors.Select(x => x.Description).ToList();
                     return serviceResponse;
                 }
@@ -78,7 +81,7 @@ namespace ChatCase.Business.Services.Identity
             }
             catch (Exception ex)
             {
-                //await _logService.InsertLogAsync(LogLevel.Error, $"UserService- Register Exception Error: model {JsonConvert.SerializeObject(model)}", ex.Message.ToString());
+                LoggerFactory.DatabaseLogManager().Error($"UserService- RegisterAsync error: {JsonConvert.SerializeObject(ex)}");
                 serviceResponse.Success = false;
                 serviceResponse.ResultCode = ResultCode.Exception;
                 serviceResponse.Warnings.Add(ex.Message);

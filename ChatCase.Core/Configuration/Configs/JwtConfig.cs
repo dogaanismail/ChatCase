@@ -18,7 +18,7 @@
         /// <summary>
         /// Gets or sets issuer
         /// </summary>
-        public string Issuer { get; set; } = "devplatformebapi";
+        public string Issuer { get; set; } = "chatCaseApi";
 
         /// <summary>
         /// Gets or sets key

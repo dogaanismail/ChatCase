@@ -1,9 +1,11 @@
-﻿using ChatCase.Core.Infrastructure;
+﻿using ChatCase.Business.Services.Logging;
+using ChatCase.Core.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Net;
 
@@ -42,8 +44,8 @@ namespace ChatCase.Framework.Infrastructure.Extensions
 
                     try
                     {
-                        //TODO: Log will be added!
-                        //await EngineContext.Current.Resolve<ILogService>().ErrorAsync(exception.Message, exception);
+                        LoggerFactory.DatabaseLogManager().Fatal($"SystemError : {JsonConvert.SerializeObject(exception)}");
+                        LoggerFactory.FileLogManager().Fatal($"SystemError : {JsonConvert.SerializeObject(exception)}");
                     }
                     finally
                     {

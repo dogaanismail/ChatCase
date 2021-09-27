@@ -1,10 +1,5 @@
-using ChatCase.Core.Configuration.Configs;
-using ChatCase.Core.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Serilog;
-using Serilog.Debugging;
-using System.Diagnostics;
 
 namespace ChatCase.Api
 {
