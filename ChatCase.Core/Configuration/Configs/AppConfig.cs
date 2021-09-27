@@ -32,6 +32,11 @@ namespace ChatCase.Core.Configuration.Configs
         public CommonConfig CommonConfig { get; set; } = new CommonConfig();
 
         /// <summary>
+        /// Gets or sets jwt configuration parameters
+        /// </summary>
+        public JwtConfig JwtConfig { get; set; } = new JwtConfig();
+
+        /// <summary>
         /// Gets or sets additional configuration parameters
         /// </summary>
         [JsonExtensionData]

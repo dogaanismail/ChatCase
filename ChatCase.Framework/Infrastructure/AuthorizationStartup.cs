@@ -7,9 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 namespace ChatCase.Framework.Infrastructure
 {
     /// <summary>
-    /// Represents object for the configuring MVC on application startup
+    /// Represents object for the configuring Authorization middleware on application startup
     /// </summary>
-    public class SystemStartup : IStartup
+    public class AuthorizationStartup : IStartup
     {
         /// <summary>
         /// Add and configure any of the middleware
@@ -18,17 +18,6 @@ namespace ChatCase.Framework.Infrastructure
         /// <param name="configuration">Configuration of the application</param>
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSystemMvc();
-
-            services.AddOptions();
-
-            services.AddSystemSwagger();
-
-            services.AddBehaviorOptions();
-
-            services.AddSystemDistributedCache();
-
-            services.AddSystemValidator();
         }
 
         /// <summary>
@@ -37,22 +26,12 @@ namespace ChatCase.Framework.Infrastructure
         /// <param name="application">Builder for configuring an application's request pipeline</param>
         public void Configure(IApplicationBuilder application)
         {
-            application.UseSystemEnvironment();
-
-            application.UseSystemRouting();
-
-            application.UseSystemSwagger();
-
-            application.UseSystemMvc();
-
-            application.UseSystemStaticFiles();
-
-            application.UseSystemEndPoint();
+            application.UseSystemAuthorization();
         }
 
         /// <summary>
         /// Gets order of this startup configuration implementation
         /// </summary>
-        public int Order => 1000; //MVC should be loaded last
+        public int Order => 600;
     }
 }

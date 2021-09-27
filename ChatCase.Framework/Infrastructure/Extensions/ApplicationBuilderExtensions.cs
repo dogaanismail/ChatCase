@@ -23,45 +23,6 @@ namespace ChatCase.Framework.Infrastructure.Extensions
             EngineContext.Current.ConfigureRequestPipeline(application);
         }
 
-        /// <summary>
-        /// Configure swagger
-        /// </summary>
-        /// <param name="application"></param>
-        public static void UseSystemSwagger(this IApplicationBuilder application)
-        {
-            application.UseSwagger();
-            application.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ChatCase.Api V1");
-                c.DocumentTitle = "Title";
-                c.DisplayOperationId();
-                c.DocExpansion(DocExpansion.None);
-            });
-        }
-
-        /// <summary>
-        /// Configure environment
-        /// </summary>
-        /// <param name="application"></param>
-        public static void UseSystemEnvironment(this IApplicationBuilder application)
-        {
-            var env = EngineContext.Current.Resolve<IWebHostEnvironment>();
-
-            if (env.IsDevelopment())
-                application.UseDeveloperExceptionPage();
-
-            else
-                application.UseHsts();
-        }
-
-        /// <summary>
-        /// Configure routing
-        /// </summary>
-        /// <param name="application"></param>
-        public static void UseSystemRouting(this IApplicationBuilder application)
-        {
-            application.UseRouting();
-        }
 
         /// <summary>
         /// Configure exception handling
@@ -96,12 +57,84 @@ namespace ChatCase.Framework.Infrastructure.Extensions
         }
 
         /// <summary>
+        /// Configure environment
+        /// </summary>
+        /// <param name="application"></param>
+        public static void UseSystemEnvironment(this IApplicationBuilder application)
+        {
+            var env = EngineContext.Current.Resolve<IWebHostEnvironment>();
+
+            if (env.IsDevelopment())
+                application.UseDeveloperExceptionPage();
+
+            else
+                application.UseHsts();
+        }
+
+        /// <summary>
         /// Configure static file serving
         /// </summary>
         /// <param name="application">Builder for configuring an application's request pipeline</param>
         public static void UseSystemStaticFiles(this IApplicationBuilder application)
         {
             application.UseHttpsRedirection().UseResponseCompression();
+        }
+
+        /// <summary>
+        /// Configure static file serving
+        /// </summary>
+        /// <param name="application">Builder for configuring an application's request pipeline</param>
+        public static void UseSystemMvc(this IApplicationBuilder application)
+        {
+            var webHostEnvironment = EngineContext.Current.Resolve<IWebHostEnvironment>();
+
+            //using cors
+            application.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+            application.UseMvc();
+        }
+
+        /// <summary>
+        /// Configure swagger
+        /// </summary>
+        /// <param name="application"></param>
+        public static void UseSystemSwagger(this IApplicationBuilder application)
+        {
+            application.UseSwagger();
+            application.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ChatCase.Api V1");
+                c.DocumentTitle = "Title";
+                c.DisplayOperationId();
+                c.DocExpansion(DocExpansion.None);
+            });
+        }
+
+        /// <summary>
+        /// Configure authentication
+        /// </summary>
+        /// <param name="application">Builder for configuring an application's request pipeline</param>
+        public static void UseSystemAuthentication(this IApplicationBuilder application)
+        {
+            application.UseAuthentication();
+        }
+
+        /// <summary>
+        /// Configure routing
+        /// </summary>
+        /// <param name="application"></param>
+        public static void UseSystemRouting(this IApplicationBuilder application)
+        {
+            application.UseRouting();
+        }
+
+        /// <summary>
+        /// Configure authorization
+        /// </summary>
+        /// <param name="application">Builder for configuring an application's request pipeline</param>
+        public static void UseSystemAuthorization(this IApplicationBuilder application)
+        {
+            application.UseAuthorization();
         }
 
         /// <summary>

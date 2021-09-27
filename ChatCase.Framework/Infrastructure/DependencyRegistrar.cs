@@ -1,6 +1,8 @@
 ﻿using ChatCase.Business.Events;
 using ChatCase.Business.Interfaces.Configuration;
+using ChatCase.Business.Interfaces.Identity;
 using ChatCase.Business.Services.Configuration;
+using ChatCase.Business.Services.Identity;
 using ChatCase.Core;
 using ChatCase.Core.Caching;
 using ChatCase.Core.Configuration.Configs;
@@ -8,9 +10,11 @@ using ChatCase.Core.Configuration.Settings;
 using ChatCase.Core.Events;
 using ChatCase.Core.Infrastructure;
 using ChatCase.Core.Infrastructure.DependencyManagement;
+using ChatCase.Core.Security;
 using ChatCase.Repository.Generic;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using System;
 using System.Linq;
 
@@ -35,6 +39,8 @@ namespace ChatCase.Framework.Infrastructure
             services.AddScoped<IWebHelper, WebHelper>();
 
             services.AddScoped<ISettingService, SettingService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddSingleton<IEventPublisher, EventPublisher>();
 

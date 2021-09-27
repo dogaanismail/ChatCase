@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.MongoDB" Version="5.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ChatCase.Core\ChatCase.Core.csproj" />
     <ProjectReference Include="..\ChatCase.Repository\ChatCase.Repository.csproj" />
   </ItemGroup>

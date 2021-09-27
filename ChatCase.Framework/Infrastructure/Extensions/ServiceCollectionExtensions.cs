@@ -1,10 +1,13 @@
 ﻿using ChatCase.Business.Configuration.Common;
 using ChatCase.Core.Attributes;
 using ChatCase.Core.Configuration.Configs;
+using ChatCase.Core.Domain.Identity;
 using ChatCase.Core.Infrastructure;
+using ChatCase.Core.Security.JwtSecurity;
 using ChatCase.Domain.Enumerations;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 
@@ -118,6 +122,43 @@ namespace ChatCase.Framework.Infrastructure.Extensions
                     }
                 });
             });
+        }
+
+        /// <summary>
+        /// Adds authentication service
+        /// </summary>
+        /// <param name="services">Collection of service descriptors</param>
+        public static void AddSystemAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            var appSettings = Singleton<AppConfig>.Instance;
+            var mongoDbSettings = appSettings.MongoDbConfig;
+            var jwtConfigs = appSettings.JwtConfig;
+
+            services.AddIdentity<AppUser, AppRole>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = false;
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = false;
+            })
+            .AddMongoDbStores<AppUser, AppRole, string>
+            (
+                mongoDbSettings.ConnectionString, mongoDbSettings.Database
+            );
+
+            services.AddAuthentication().AddCookie(options =>
+            {
+                options.Cookie.Name = "Interop";
+                options.DataProtectionProvider =
+                    DataProtectionProvider.Create(new DirectoryInfo("C:\\Github\\Identity\\artifacts"));
+            });
+
+            JwtTokenDefinitions.LoadFromConfiguration(jwtConfigs);
+            services.ConfigureJwtAuthentication();
+            services.ConfigureJwtAuthorization();
         }
 
         /// <summary>
