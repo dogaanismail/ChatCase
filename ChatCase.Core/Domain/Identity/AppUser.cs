@@ -1,10 +1,10 @@
-﻿using AspNetCore.Identity.MongoDbCore.Models;
+﻿using AspNetCore.Identity.Mongo.Model;
 using MongoDbGenericRepository.Attributes;
 
 namespace ChatCase.Core.Domain.Identity
 {
     [CollectionName("appuser")]
-    public class AppUser : MongoIdentityUser<string>
+    public class AppUser : MongoUser<string>
     {
     }
 }

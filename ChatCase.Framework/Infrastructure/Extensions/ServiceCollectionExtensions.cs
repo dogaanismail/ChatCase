@@ -1,4 +1,5 @@
-﻿using ChatCase.Business.Configuration.Common;
+﻿using AspNetCore.Identity.Mongo;
+using ChatCase.Business.Configuration.Common;
 using ChatCase.Core.Attributes;
 using ChatCase.Core.Configuration.Configs;
 using ChatCase.Core.Domain.Identity;
@@ -9,17 +10,17 @@ using ChatCase.Domain.Enumerations;
 using ChatCase.Domain.Validation.Identity;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 
@@ -44,7 +45,7 @@ namespace ChatCase.Framework.Infrastructure.Extensions
 
             CommonHelper.DefaultFileProvider = new SystemFileProvider(webHostEnvironment);
 
-            services.AddHttpContextAccessor();
+            services.AddSystemHttpContextAccessor();
 
             var appConfigs = new AppConfig();
             configuration.Bind(appConfigs);
@@ -63,7 +64,7 @@ namespace ChatCase.Framework.Infrastructure.Extensions
         /// Register httpContextAccessor
         /// </summary>
         /// <param name="services"></param>
-        public static void AddHttpContextAccessor(this IServiceCollection services)
+        public static void AddSystemHttpContextAccessor(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
@@ -137,7 +138,7 @@ namespace ChatCase.Framework.Infrastructure.Extensions
             var mongoDbSettings = appSettings.MongoDbConfig;
             var jwtConfigs = appSettings.JwtConfig;
 
-            services.AddIdentity<AppUser, AppRole>(options =>
+            services.AddIdentityMongoDbProvider<AppUser, AppRole, string>(options =>
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 4;
@@ -146,18 +147,13 @@ namespace ChatCase.Framework.Infrastructure.Extensions
                 options.Password.RequireLowercase = false;
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = false;
-            })
-            .AddMongoDbStores<AppUser, AppRole, string>
-            (
-                mongoDbSettings.ConnectionString, mongoDbSettings.Database
-            );
+            },
+            mongo =>
+             {
+                 mongo.ConnectionString = mongoDbSettings.ConnectionString;
+             });
 
-            services.AddAuthentication().AddCookie(options =>
-            {
-                options.Cookie.Name = "Interop";
-                options.DataProtectionProvider =
-                    DataProtectionProvider.Create(new DirectoryInfo("C:\\Github\\Identity\\artifacts"));
-            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
             JwtTokenDefinitions.LoadFromConfiguration(jwtConfigs);
             services.ConfigureJwtAuthentication();

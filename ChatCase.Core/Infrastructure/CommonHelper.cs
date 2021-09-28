@@ -67,5 +67,31 @@ namespace ChatCase.Core.Infrastructure
 
             return value;
         }
+
+        /// <summary>
+        /// Ensure that a string doesn't exceed maximum allowed length
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="maxLength"></param>
+        /// <param name="postfix"></param>
+        /// <returns></returns>
+        public static string EnsureMaximumLength(string str, int maxLength, string postfix = null)
+        {
+            if (string.IsNullOrEmpty(str))
+                return str;
+
+            if (str.Length <= maxLength)
+                return str;
+
+            var pLen = postfix?.Length ?? 0;
+
+            var result = str[0..(maxLength - pLen)];
+            if (!string.IsNullOrEmpty(postfix))
+            {
+                result += postfix;
+            }
+
+            return result;
+        }
     }
 }

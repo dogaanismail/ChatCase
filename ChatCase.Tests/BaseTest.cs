@@ -155,20 +155,20 @@ namespace ChatCase.Tests
 
             #region MongoDb Identity Registrations
 
-            services.AddIdentity<AppUser, AppRole>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 4;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = false;
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = false;
-            })
-            .AddMongoDbStores<AppUser, AppRole, string>
-            (
-                appSettings.MongoDbConfig.ConnectionString, appSettings.MongoDbConfig.Database
-            );
+            //services.AddIdentity<AppUser, AppRole>(options =>
+            //{
+            //    options.Password.RequireDigit = true;
+            //    options.Password.RequiredLength = 4;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.RequireUppercase = true;
+            //    options.Password.RequireLowercase = false;
+            //    options.User.RequireUniqueEmail = true;
+            //    options.SignIn.RequireConfirmedEmail = false;
+            //})
+            //.AddMongoDbStores<AppUser, AppRole, string>
+            //(
+            //    appSettings.MongoDbConfig.ConnectionString, appSettings.MongoDbConfig.Database
+            //);
 
             services.AddAuthentication().AddCookie(options =>
             {

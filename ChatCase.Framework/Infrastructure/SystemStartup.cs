@@ -22,13 +22,13 @@ namespace ChatCase.Framework.Infrastructure
 
             services.AddOptions();
 
+            services.AddSystemValidator();
+
             services.AddSystemSwagger();
 
             services.AddBehaviorOptions();
 
-            services.AddSystemDistributedCache();
-
-            services.AddSystemValidator();
+            services.AddSystemDistributedCache();          
         }
 
         /// <summary>
@@ -39,14 +39,14 @@ namespace ChatCase.Framework.Infrastructure
         {
             application.UseSystemEnvironment();
 
+            application.UseSystemStaticFiles();
+
             application.UseSystemRouting();
 
             application.UseSystemSwagger();
 
             application.UseSystemMvc();
-
-            application.UseSystemStaticFiles();
-
+           
             application.UseSystemEndPoint();
         }
 

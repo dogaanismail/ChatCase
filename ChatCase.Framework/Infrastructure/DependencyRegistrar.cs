@@ -1,8 +1,10 @@
 ﻿using ChatCase.Business.Events;
 using ChatCase.Business.Interfaces.Configuration;
 using ChatCase.Business.Interfaces.Identity;
+using ChatCase.Business.Interfaces.Logging;
 using ChatCase.Business.Services.Configuration;
 using ChatCase.Business.Services.Identity;
+using ChatCase.Business.Services.Logging;
 using ChatCase.Core;
 using ChatCase.Core.Caching;
 using ChatCase.Core.Configuration.Configs;
@@ -12,9 +14,9 @@ using ChatCase.Core.Infrastructure;
 using ChatCase.Core.Infrastructure.DependencyManagement;
 using ChatCase.Core.Security;
 using ChatCase.Repository.Generic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 using System;
 using System.Linq;
 
@@ -34,13 +36,17 @@ namespace ChatCase.Framework.Infrastructure
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddScoped(typeof(IRepository<>), typeof(RepositoryBase<>));
 
+            services.AddScoped<IWorkContext, WebWorkContext>();
             services.AddScoped<IWebHelper, WebHelper>();
 
             services.AddScoped<ISettingService, SettingService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAppUserActivityService, AppUserActivityService>();
 
             services.AddSingleton<IEventPublisher, EventPublisher>();
 

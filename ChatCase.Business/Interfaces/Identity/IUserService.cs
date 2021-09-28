@@ -35,5 +35,11 @@ namespace ChatCase.Business.Interfaces.Identity
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<AppUser> GetByIdAsync(string userId);
+
+        /// <summary>
+        /// Creates a guest user
+        /// </summary>
+        /// <returns></returns>
+        Task<AppUser> CreateGuestUser();
     }
 }
