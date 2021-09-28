@@ -12,6 +12,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +22,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 
@@ -138,7 +140,7 @@ namespace ChatCase.Framework.Infrastructure.Extensions
             var mongoDbSettings = appSettings.MongoDbConfig;
             var jwtConfigs = appSettings.JwtConfig;
 
-            services.AddIdentityMongoDbProvider<AppUser, AppRole, string>(options =>
+            services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 4;
@@ -147,17 +149,14 @@ namespace ChatCase.Framework.Infrastructure.Extensions
                 options.Password.RequireLowercase = false;
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = false;
-            },
-            mongo =>
-             {
-                 mongo.ConnectionString = mongoDbSettings.ConnectionString;
-             });
-
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            })
+            .AddMongoDbStores<AppUser, AppRole, string>
+            (
+                mongoDbSettings.ConnectionString, mongoDbSettings.Database
+            ).AddDefaultTokenProviders();
 
             JwtTokenDefinitions.LoadFromConfiguration(jwtConfigs);
-            services.ConfigureJwtAuthentication();
-            services.ConfigureJwtAuthorization();
+            services.ConfigureJwtAuthentication();   
         }
 
         /// <summary>

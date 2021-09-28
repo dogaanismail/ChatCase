@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Security.Claims;
 
 namespace ChatCase.Core.Security.JwtSecurity
 {
@@ -15,35 +16,29 @@ namespace ChatCase.Core.Security.JwtSecurity
         {
             services.AddAuthorizationCore(auth =>
             {
-                auth.AddPolicy("BearerNegotiateNTLM ", new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser().Build());
+                auth.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
+                {
+                    policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireClaim(ClaimTypes.NameIdentifier);
+                });
             });
         }
 
         public static void ConfigureJwtAuthentication(this IServiceCollection services)
         {
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                 .AddJwtBearer(options =>
                 {
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
-                        ValidateIssuer = true,
                         ValidateAudience = true,
-                        RequireExpirationTime = true,
-                        IssuerSigningKey = JwtTokenDefinitions.IssuerSigningKey,
-                        ValidAudience = JwtTokenDefinitions.Audience,
+                        ValidateIssuer = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
                         ValidIssuer = JwtTokenDefinitions.Issuer,
-                        ValidateIssuerSigningKey = JwtTokenDefinitions.ValidateIssuerSigningKey,
-                        ValidateLifetime = JwtTokenDefinitions.ValidateLifetime,
-                        ClockSkew = JwtTokenDefinitions.ClockSkew
+                        ValidAudience = JwtTokenDefinitions.Audience,
+                        IssuerSigningKey = JwtTokenDefinitions.IssuerSigningKey,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
         }

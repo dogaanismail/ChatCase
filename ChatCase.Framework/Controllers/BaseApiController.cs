@@ -7,7 +7,6 @@ using System.Net;
 namespace ChatCase.Framework.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BaseApiController : Controller
     {
         #region Fields

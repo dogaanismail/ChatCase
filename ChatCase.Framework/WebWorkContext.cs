@@ -56,7 +56,7 @@ namespace ChatCase.Framework
             if (appUser == null)
             {
                 if (_httpContextAccessor.HttpContext?.User != null && !string.IsNullOrEmpty(_httpContextAccessor.HttpContext?.User?.Identity.Name))
-                    appUser = await _userManager.FindByNameAsync(_httpContextAccessor.HttpContext?.User?.Identity.Name);
+                    appUser = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User);
 
                 if (appUser == null)
                     appUser = await CreateGuestUser();
