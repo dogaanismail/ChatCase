@@ -4,7 +4,10 @@ using ChatCase.Core.Configuration.Configs;
 using ChatCase.Core.Domain.Identity;
 using ChatCase.Core.Infrastructure;
 using ChatCase.Core.Security.JwtSecurity;
+using ChatCase.Domain.Dto.Request.Identity;
 using ChatCase.Domain.Enumerations;
+using ChatCase.Domain.Validation.Identity;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -215,7 +218,8 @@ namespace ChatCase.Framework.Infrastructure.Extensions
         /// <param name="services"></param>
         public static void AddSystemValidator(this IServiceCollection services)
         {
-            //TODO: Validators will be added!
+            services.AddSingleton<IValidator<LoginRequest>, LoginRequestValidator>();
+            services.AddSingleton<IValidator<RegisterRequest>, RegisterRequestValidator>();
         }
     }
 }
