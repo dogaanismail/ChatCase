@@ -115,7 +115,7 @@ namespace ChatCase.Api.Controllers
         [HttpPost("logout")]
         public virtual async Task<IActionResult> LogOut()
         {
-            await _userActivityService.InsertActivityAsync(nameof(AppUser), "UserLoginError");
+            await _userActivityService.InsertActivityAsync(nameof(AppUser), "UserLogOut");
 
             await _signInManager.SignOutAsync();
             Result.Status = true;
