@@ -1,7 +1,13 @@
 ﻿using AutoMapper;
 using ChatCase.Business.Events;
+using ChatCase.Business.Interfaces.Chatting;
 using ChatCase.Business.Interfaces.Configuration;
+using ChatCase.Business.Interfaces.Identity;
+using ChatCase.Business.Interfaces.Logging;
+using ChatCase.Business.Services.Chatting;
 using ChatCase.Business.Services.Configuration;
+using ChatCase.Business.Services.Identity;
+using ChatCase.Business.Services.Logging;
 using ChatCase.Core;
 using ChatCase.Core.Caching;
 using ChatCase.Core.Configuration.Configs;
@@ -11,7 +17,6 @@ using ChatCase.Core.Events;
 using ChatCase.Core.Infrastructure;
 using ChatCase.Core.Infrastructure.Mapper;
 using ChatCase.Repository.Generic;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -108,6 +113,9 @@ namespace ChatCase.Tests
             #region Services Dependency Registrations
 
             services.AddTransient<ISettingService, SettingService>();
+            services.AddTransient<IChattingService, ChattingService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAppUserActivityService, AppUserActivityService>();
             #endregion
 
             #region Consumer&Event Dependency Registrations
@@ -155,27 +163,20 @@ namespace ChatCase.Tests
 
             #region MongoDb Identity Registrations
 
-            //services.AddIdentity<AppUser, AppRole>(options =>
-            //{
-            //    options.Password.RequireDigit = true;
-            //    options.Password.RequiredLength = 4;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireUppercase = true;
-            //    options.Password.RequireLowercase = false;
-            //    options.User.RequireUniqueEmail = true;
-            //    options.SignIn.RequireConfirmedEmail = false;
-            //})
-            //.AddMongoDbStores<AppUser, AppRole, string>
-            //(
-            //    appSettings.MongoDbConfig.ConnectionString, appSettings.MongoDbConfig.Database
-            //);
-
-            services.AddAuthentication().AddCookie(options =>
+            services.AddIdentity<AppUser, AppRole>(options =>
             {
-                options.Cookie.Name = "Interop";
-                options.DataProtectionProvider =
-                    DataProtectionProvider.Create(new DirectoryInfo("C:\\Github\\Identity\\artifacts"));
-            });
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = false;
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = false;
+            })
+            .AddMongoDbStores<AppUser, AppRole, string>
+            (
+                appSettings.MongoDbConfig.ConnectionString, appSettings.MongoDbConfig.Database
+            );
 
             #endregion
 

@@ -30,6 +30,13 @@ namespace ChatCase.Business.Interfaces.Logging
         Task<List<ActivityLogDto>> GetActivitiesByUserName(string userName);
 
         /// <summary>
+        /// Gets activity list by email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        Task<List<ActivityLogDto>> GetActivitiesByEmail(string email);
+
+        /// <summary>
         /// Inserts an activity log item
         /// </summary>
         /// <param name="appUser"></param>

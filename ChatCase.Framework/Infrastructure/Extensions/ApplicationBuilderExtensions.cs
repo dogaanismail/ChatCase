@@ -1,5 +1,6 @@
 ﻿using ChatCase.Business.Services.Logging;
 using ChatCase.Core.Infrastructure;
+using ChatCase.Framework.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -130,6 +131,8 @@ namespace ChatCase.Framework.Infrastructure.Extensions
         {
             application.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ChatGroupHub>("/chatHub");
+
                 endpoints.MapControllers();
             });
         }

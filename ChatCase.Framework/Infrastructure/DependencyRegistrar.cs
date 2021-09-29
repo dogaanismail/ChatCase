@@ -1,7 +1,9 @@
 ﻿using ChatCase.Business.Events;
+using ChatCase.Business.Interfaces.Chatting;
 using ChatCase.Business.Interfaces.Configuration;
 using ChatCase.Business.Interfaces.Identity;
 using ChatCase.Business.Interfaces.Logging;
+using ChatCase.Business.Services.Chatting;
 using ChatCase.Business.Services.Configuration;
 using ChatCase.Business.Services.Identity;
 using ChatCase.Business.Services.Logging;
@@ -45,6 +47,7 @@ namespace ChatCase.Framework.Infrastructure
             services.AddScoped<ISettingService, SettingService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAppUserActivityService, AppUserActivityService>();
+            services.AddScoped<IChattingService, ChattingService>();
 
             services.AddSingleton<IEventPublisher, EventPublisher>();
 

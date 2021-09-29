@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using ChatCase.Core.Domain.Chatting;
 using ChatCase.Core.Domain.Logging;
 using ChatCase.Core.Infrastructure.Mapper;
+using ChatCase.Domain.Dto.Response.Chatting;
 using ChatCase.Domain.Dto.Response.Logging;
 
 namespace ChatCase.Business.Configuration.Common
@@ -11,6 +13,7 @@ namespace ChatCase.Business.Configuration.Common
         public MapperConfiguration()
         {
             CreateActivityLogMaps();
+            CreateChatMaps();
         }
 
         #endregion
@@ -20,6 +23,11 @@ namespace ChatCase.Business.Configuration.Common
         protected virtual void CreateActivityLogMaps()
         {
             CreateMap<ActivityLog, ActivityLogDto>();
+        }
+
+        protected virtual void CreateChatMaps()
+        {
+            CreateMap<Chat, MessageDto>();
         }
         #endregion
 

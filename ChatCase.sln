@@ -15,21 +15,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{63C6ED89-839B-4C46-A8B5-E3B21AC6D1A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatCase.Repository", "ChatCase.Repository\ChatCase.Repository.csproj", "{CF483B2D-CA1D-407A-8FE4-8B84654AB528}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatCase.Repository", "ChatCase.Repository\ChatCase.Repository.csproj", "{CF483B2D-CA1D-407A-8FE4-8B84654AB528}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatCase.Domain", "ChatCase.Domain\ChatCase.Domain.csproj", "{7DA9E3D6-5645-4372-9583-7C79B2C1227B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatCase.Domain", "ChatCase.Domain\ChatCase.Domain.csproj", "{7DA9E3D6-5645-4372-9583-7C79B2C1227B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatCase.Core", "ChatCase.Core\ChatCase.Core.csproj", "{417676A9-3306-414D-A858-9D1F817A3AEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatCase.Core", "ChatCase.Core\ChatCase.Core.csproj", "{417676A9-3306-414D-A858-9D1F817A3AEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatCase.Common", "ChatCase.Common\ChatCase.Common.csproj", "{CF3A3465-8E09-4707-9DA4-4D1B14A9516C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatCase.Common", "ChatCase.Common\ChatCase.Common.csproj", "{CF3A3465-8E09-4707-9DA4-4D1B14A9516C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatCase.Business", "ChatCase.Business\ChatCase.Business.csproj", "{DF438592-351A-47CB-96EA-87BBA094119D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatCase.Business", "ChatCase.Business\ChatCase.Business.csproj", "{DF438592-351A-47CB-96EA-87BBA094119D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatCase.Framework", "ChatCase.Framework\ChatCase.Framework.csproj", "{5DCECC8B-A384-44DD-89C4-8C9884F8C0A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatCase.Framework", "ChatCase.Framework\ChatCase.Framework.csproj", "{5DCECC8B-A384-44DD-89C4-8C9884F8C0A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatCase.Api", "ChatCase.Api\ChatCase.Api.csproj", "{1D7686CF-15FD-4ACB-B8C4-9D5304A8679C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatCase.Api", "ChatCase.Api\ChatCase.Api.csproj", "{1D7686CF-15FD-4ACB-B8C4-9D5304A8679C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatCase.Tests", "ChatCase.Tests\ChatCase.Tests.csproj", "{6DA1057D-D9F4-47FD-9142-BD562A49737B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatCase.Tests", "ChatCase.Tests\ChatCase.Tests.csproj", "{6DA1057D-D9F4-47FD-9142-BD562A49737B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

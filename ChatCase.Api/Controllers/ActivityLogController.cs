@@ -2,9 +2,6 @@
 using ChatCase.Framework.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ChatCase.Api.Controllers
@@ -41,6 +38,15 @@ namespace ChatCase.Api.Controllers
         public virtual async Task<IActionResult> GetActivitiesByUserNameAsync(string username)
         {
             var data = await _userActivityService.GetActivitiesByUserName(username);
+
+            return OkResponse(data);
+        }
+
+        [HttpGet("get/email/{email}")]
+        [AllowAnonymous]
+        public virtual async Task<IActionResult> GetActivitiesByEmailAsync(string email)
+        {
+            var data = await _userActivityService.GetActivitiesByUserName(email);
 
             return OkResponse(data);
         }

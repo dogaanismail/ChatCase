@@ -31,7 +31,7 @@ namespace ChatCase.Business.Services.Logging
             _webHelper = webHelper;
             _workContext = workContext;
         }
-    
+
         #endregion
 
         #region Methods
@@ -142,6 +142,27 @@ namespace ChatCase.Business.Services.Logging
         public virtual async Task<ActivityLog> InsertAsync(string entityName, string comment)
         {
             return await InsertAsync(entityName, comment, await _workContext.GetCurrentUserAsync());
+        }
+
+        /// <summary>
+        /// Gets activity list by email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public virtual async Task<List<ActivityLogDto>> GetActivitiesByEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+                throw new ArgumentNullException(nameof(email));
+
+            var appUser = await EngineContext.Current.Resolve<IUserService>().GetByUserNameAsync(email);
+
+            if (appUser != null)
+            {
+                var activityList = await _activityLogRepository.GetListAsync(x => x.AppUserId == appUser.Id);
+                return AutoMapperConfiguration.Mapper.Map<List<ActivityLogDto>>(activityList);
+            }
+
+            return null;
         }
 
         #endregion
