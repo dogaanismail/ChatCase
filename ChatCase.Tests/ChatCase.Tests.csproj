@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ChatCase.Business\ChatCase.Business.csproj" />
     <ProjectReference Include="..\ChatCase.Core\ChatCase.Core.csproj" />
+    <ProjectReference Include="..\ChatCase.Framework\ChatCase.Framework.csproj" />
     <ProjectReference Include="..\ChatCase.Repository\ChatCase.Repository.csproj" />
   </ItemGroup>
 

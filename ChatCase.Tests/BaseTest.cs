@@ -16,6 +16,7 @@ using ChatCase.Core.Domain.Identity;
 using ChatCase.Core.Events;
 using ChatCase.Core.Infrastructure;
 using ChatCase.Core.Infrastructure.Mapper;
+using ChatCase.Framework;
 using ChatCase.Repository.Generic;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -109,6 +110,7 @@ namespace ChatCase.Tests
             services.AddTransient(typeof(IRepository<>), typeof(RepositoryBase<>));
 
             services.AddTransient<IWebHelper, WebHelper>();
+            services.AddTransient<IWorkContext, WebWorkContext>();
 
             #region Services Dependency Registrations
 
