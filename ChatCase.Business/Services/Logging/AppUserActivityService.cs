@@ -4,8 +4,11 @@ using ChatCase.Core;
 using ChatCase.Core.Domain.Identity;
 using ChatCase.Core.Domain.Logging;
 using ChatCase.Core.Infrastructure;
+using ChatCase.Core.Infrastructure.Mapper;
+using ChatCase.Domain.Dto.Response.Logging;
 using ChatCase.Repository.Generic;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ChatCase.Business.Services.Logging
@@ -28,6 +31,7 @@ namespace ChatCase.Business.Services.Logging
             _webHelper = webHelper;
             _workContext = workContext;
         }
+    
         #endregion
 
         #region Methods
@@ -37,7 +41,7 @@ namespace ChatCase.Business.Services.Logging
         /// </summary>
         /// <param name="activityId"></param>
         /// <returns></returns>
-        public virtual async Task<ActivityLog> GetActivityByIdAsync(string activityId)
+        public virtual async Task<ActivityLog> GetByIdAsync(string activityId)
         {
             if (string.IsNullOrEmpty(activityId))
                 throw new ArgumentNullException(nameof(activityId));
@@ -46,24 +50,25 @@ namespace ChatCase.Business.Services.Logging
         }
 
         /// <summary>
-        /// Gets an activity by userId
+        /// Gets an activity by activityId
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="activityId"></param>
         /// <returns></returns>
-        public virtual async Task<ActivityLog> GetActivityByUserId(string userId)
+        public virtual async Task<ActivityLogDto> GetByIdDtoAsync(string activityId)
         {
-            if (string.IsNullOrEmpty(userId))
-                throw new ArgumentNullException(nameof(userId));
+            if (string.IsNullOrEmpty(activityId))
+                throw new ArgumentNullException(nameof(activityId));
 
-            return await _activityLogRepository.GetAsync(x => x.AppUserId == userId);
+            var activity = await _activityLogRepository.GetByIdAsync(activityId);
+            return AutoMapperConfiguration.Mapper.Map<ActivityLogDto>(activity);
         }
 
         /// <summary>
-        /// Gets an activity by userName
+        /// Gets activity list by userName
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
-        public virtual async Task<ActivityLog> GetActivityByUserName(string userName)
+        public virtual async Task<List<ActivityLogDto>> GetActivitiesByUserName(string userName)
         {
             if (string.IsNullOrEmpty(userName))
                 throw new ArgumentNullException(nameof(userName));
@@ -71,7 +76,10 @@ namespace ChatCase.Business.Services.Logging
             var appUser = await EngineContext.Current.Resolve<IUserService>().GetByUserNameAsync(userName);
 
             if (appUser != null)
-                return await _activityLogRepository.GetAsync(x => x.AppUserId == appUser.Id);
+            {
+                var activityList = await _activityLogRepository.GetListAsync(x => x.AppUserId == appUser.Id);
+                return AutoMapperConfiguration.Mapper.Map<List<ActivityLogDto>>(activityList);
+            }
 
             return null;
         }
@@ -84,7 +92,7 @@ namespace ChatCase.Business.Services.Logging
         /// <param name="comment"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual async Task<ActivityLog> InsertActivityAsync(string entityId, string entityName, string comment, AppUser appUser = null)
+        public virtual async Task<ActivityLog> InsertAsync(string entityId, string entityName, string comment, AppUser appUser = null)
         {
             var logItem = new ActivityLog
             {
@@ -92,7 +100,6 @@ namespace ChatCase.Business.Services.Logging
                 EntityName = entityName,
                 AppUserId = appUser?.Id,
                 Comment = CommonHelper.EnsureMaximumLength(comment ?? string.Empty, 4000),
-                CreatedOnUtc = DateTime.UtcNow,
                 IpAddress = _webHelper.GetCurrentIpAddress()
             };
 
@@ -109,7 +116,7 @@ namespace ChatCase.Business.Services.Logging
         /// <param name="comment"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual async Task<ActivityLog> InsertActivityAsync(string entityName, string comment, AppUser appUser = null)
+        public virtual async Task<ActivityLog> InsertAsync(string entityName, string comment, AppUser appUser = null)
         {
             var logItem = new ActivityLog
             {
@@ -117,7 +124,6 @@ namespace ChatCase.Business.Services.Logging
                 EntityName = entityName,
                 AppUserId = appUser?.Id,
                 Comment = CommonHelper.EnsureMaximumLength(comment ?? string.Empty, 4000),
-                CreatedOnUtc = DateTime.UtcNow,
                 IpAddress = _webHelper.GetCurrentIpAddress()
             };
 
@@ -133,9 +139,9 @@ namespace ChatCase.Business.Services.Logging
         /// <param name="entityName"></param>
         /// <param name="comment"></param>
         /// <returns></returns>
-        public virtual async Task<ActivityLog> InsertActivityAsync(string entityName, string comment)
+        public virtual async Task<ActivityLog> InsertAsync(string entityName, string comment)
         {
-            return await InsertActivityAsync(entityName, comment, await _workContext.GetCurrentUserAsync());
+            return await InsertAsync(entityName, comment, await _workContext.GetCurrentUserAsync());
         }
 
         #endregion

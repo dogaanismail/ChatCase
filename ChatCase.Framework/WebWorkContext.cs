@@ -3,6 +3,7 @@ using ChatCase.Core.Domain.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
+using System;
 using System.Threading.Tasks;
 
 namespace ChatCase.Framework
@@ -61,7 +62,7 @@ namespace ChatCase.Framework
                 if (appUser == null)
                     appUser = await CreateGuestUser();
             }
-                  
+
             _cachedUser = appUser;
         }
 
@@ -79,6 +80,7 @@ namespace ChatCase.Framework
             userEntity.Id = ObjectId.GenerateNewId().ToString();
             userEntity.UserName = $"GuestUser-{userEntity.Id}";
             userEntity.Email = $"guest-{userEntity.Id}@chatcase.com";
+            userEntity.RegisteredDate = DateTime.UtcNow;
 
             IdentityResult result = await _userManager.CreateAsync(userEntity);
             if (result.Succeeded)
@@ -99,7 +101,8 @@ namespace ChatCase.Framework
                 await _roleManager.CreateAsync(new AppRole
                 {
                     Id = ObjectId.GenerateNewId().ToString(),
-                    Name = "Guest"
+                    Name = "Guest",
+                    CreatedAt = DateTime.UtcNow
                 });
         }
 

@@ -156,7 +156,8 @@ namespace ChatCase.Framework.Infrastructure.Extensions
             ).AddDefaultTokenProviders();
 
             JwtTokenDefinitions.LoadFromConfiguration(jwtConfigs);
-            services.ConfigureJwtAuthentication();   
+            services.ConfigureJwtAuthentication();
+            services.ConfigureJwtAuthorization();
         }
 
         /// <summary>

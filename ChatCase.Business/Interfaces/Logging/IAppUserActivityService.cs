@@ -1,5 +1,7 @@
 ﻿using ChatCase.Core.Domain.Identity;
 using ChatCase.Core.Domain.Logging;
+using ChatCase.Domain.Dto.Response.Logging;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ChatCase.Business.Interfaces.Logging
@@ -11,21 +13,21 @@ namespace ChatCase.Business.Interfaces.Logging
         /// </summary>
         /// <param name="activityId"></param>
         /// <returns></returns>
-        Task<ActivityLog> GetActivityByIdAsync(string activityId);
+        Task<ActivityLog> GetByIdAsync(string activityId);
 
         /// <summary>
-        /// Gets an activity by userId
+        /// Gets an activity by activityId
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="activityId"></param>
         /// <returns></returns>
-        Task<ActivityLog> GetActivityByUserId(string userId);
+        Task<ActivityLogDto> GetByIdDtoAsync(string activityId);
 
         /// <summary>
-        /// Gets an activity by userName
+        /// Gets activity list by userName
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
-        Task<ActivityLog> GetActivityByUserName(string userName);
+        Task<List<ActivityLogDto>> GetActivitiesByUserName(string userName);
 
         /// <summary>
         /// Inserts an activity log item
@@ -35,7 +37,7 @@ namespace ChatCase.Business.Interfaces.Logging
         /// <param name="comment"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<ActivityLog> InsertActivityAsync(string entityId, string entityName, string comment, AppUser appUser = null);
+        Task<ActivityLog> InsertAsync(string entityId, string entityName, string comment, AppUser appUser = null);
 
         /// <summary>
         /// Inserts an activity log item
@@ -43,6 +45,6 @@ namespace ChatCase.Business.Interfaces.Logging
         /// <param name="entityName"></param>
         /// <param name="comment"></param>
         /// <returns></returns>
-        Task<ActivityLog> InsertActivityAsync( string entityName, string comment);
+        Task<ActivityLog> InsertAsync( string entityName, string comment);
     }
 }

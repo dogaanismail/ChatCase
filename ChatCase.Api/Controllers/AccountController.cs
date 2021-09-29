@@ -85,11 +85,11 @@ namespace ChatCase.Api.Controllers
         public virtual async Task<IActionResult> LoginAsync([FromBody] LoginRequest model)
         {
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
-
-            var appUser = await _userService.GetByUserNameAsync(model.UserName);
-
-            if (result.Succeeded && appUser != null)
+     
+            if (result.Succeeded)
             {
+                var appUser = await _userService.GetByUserNameAsync(model.UserName);
+
                 var token = _tokenService.GenerateToken(new AppUserDto
                 {
                     UserId = appUser.Id,
@@ -97,13 +97,13 @@ namespace ChatCase.Api.Controllers
                     Email = appUser.Email
                 });
 
-                await _userActivityService.InsertActivityAsync(nameof(AppUser), "UserLoggedIn");
+                await _userActivityService.InsertAsync(nameof(AppUser), "UserLoggedIn");
 
                 return OkResponse(token);
             }
             else
             {
-                await _userActivityService.InsertActivityAsync(nameof(AppUser), "UserLoginError");
+                await _userActivityService.InsertAsync(nameof(AppUser), "UserLoginError");
 
                 LoggerFactory.DatabaseLogManager().Error($"AccountController- LoginAsync error: {JsonConvert.SerializeObject(result)}");
                 Result.Status = false;
@@ -115,7 +115,7 @@ namespace ChatCase.Api.Controllers
         [HttpPost("logout")]
         public virtual async Task<IActionResult> LogOut()
         {
-            await _userActivityService.InsertActivityAsync(nameof(AppUser), "UserLogOut");
+            await _userActivityService.InsertAsync(nameof(AppUser), "UserLogOut");
 
             await _signInManager.SignOutAsync();
             Result.Status = true;

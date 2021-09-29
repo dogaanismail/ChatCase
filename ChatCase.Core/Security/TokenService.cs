@@ -1,5 +1,6 @@
 ﻿using ChatCase.Core.Security.JwtSecurity;
 using ChatCase.Domain.Dto.Response.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,8 @@ namespace ChatCase.Core.Security
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, appUserDto.UserId.ToString())
+                new Claim(ClaimTypes.Name, appUserDto.UserName),
+                new Claim(ClaimTypes.NameIdentifier, appUserDto.UserId.ToString()),
             };
 
             string accessToken = GenerateAccessToken(claims);
@@ -50,12 +52,15 @@ namespace ChatCase.Core.Security
         /// <returns></returns>
         public string GenerateAccessToken(IEnumerable<Claim> claims)
         {
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
             var handler = new JwtSecurityTokenHandler();
             var securityTokenHanlder = handler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = JwtTokenDefinitions.Issuer,
                 Audience = JwtTokenDefinitions.Audience,
                 SigningCredentials = JwtTokenDefinitions.SigningCredentials,
+                Subject = claimsIdentity,
                 Expires = DateTime.Now.Add(JwtTokenDefinitions.TokenExpirationTime),
                 NotBefore = DateTime.Now
             });

@@ -64,14 +64,15 @@ namespace ChatCase.Business.Services.Identity
                 {
                     Id = ObjectId.GenerateNewId().ToString(),
                     UserName = model.UserName,
-                    Email = model.Email
+                    Email = model.Email,
+                    RegisteredDate = DateTime.UtcNow
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(userEntity, model.Password);
 
                 if (!result.Succeeded && result.Errors != null && result.Errors.Any())
                 {
-                    await _userActivityService.InsertActivityAsync(userEntity.Id, nameof(AppUser), "UserRegisterError", userEntity);
+                    await _userActivityService.InsertAsync(userEntity.Id, nameof(AppUser), "UserRegisterError", userEntity);
 
                     LoggerFactory.DatabaseLogManager().Error($"UserService- RegisterAsync error: {JsonConvert.SerializeObject(result)}");
 
@@ -84,7 +85,7 @@ namespace ChatCase.Business.Services.Identity
                 await _userManager.AddToRoleAsync(userEntity, "Registered");
                 await _userManager.AddClaimAsync(userEntity, new Claim(ClaimTypes.Role, "Registered"));
 
-                await _userActivityService.InsertActivityAsync(userEntity.Id, nameof(AppUser), "UserRegistered", userEntity);
+                await _userActivityService.InsertAsync(userEntity.Id, nameof(AppUser), "UserRegistered", userEntity);
 
                 serviceResponse.Success = true;
                 serviceResponse.ResultCode = ResultCode.Success;
@@ -174,7 +175,8 @@ namespace ChatCase.Business.Services.Identity
                 await _roleManager.CreateAsync(new AppRole
                 {
                     Id = ObjectId.GenerateNewId().ToString(),
-                    Name = "Registered"
+                    Name = "Registered",
+                    CreatedAt = DateTime.UtcNow
                 });
         }
 
