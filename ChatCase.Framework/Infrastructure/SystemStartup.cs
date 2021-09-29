@@ -20,6 +20,8 @@ namespace ChatCase.Framework.Infrastructure
         {
             services.AddSystemMvc();
 
+            services.AddSystemAuthentication(configuration);
+
             services.AddOptions();
 
             services.AddSystemValidator();
@@ -37,6 +39,10 @@ namespace ChatCase.Framework.Infrastructure
         /// <param name="application">Builder for configuring an application's request pipeline</param>
         public void Configure(IApplicationBuilder application)
         {
+            application.UseAuthentication();
+
+            application.UseAuthorization();
+
             application.UseSystemEnvironment();
 
             application.UseSystemStaticFiles();

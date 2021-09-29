@@ -112,14 +112,6 @@ namespace ChatCase.Framework.Infrastructure.Extensions
             });
         }
 
-        /// <summary>
-        /// Configure authentication
-        /// </summary>
-        /// <param name="application">Builder for configuring an application's request pipeline</param>
-        public static void UseSystemAuthentication(this IApplicationBuilder application)
-        {
-            application.UseAuthentication();
-        }
 
         /// <summary>
         /// Configure routing
@@ -128,15 +120,6 @@ namespace ChatCase.Framework.Infrastructure.Extensions
         public static void UseSystemRouting(this IApplicationBuilder application)
         {
             application.UseRouting();
-        }
-
-        /// <summary>
-        /// Configure authorization
-        /// </summary>
-        /// <param name="application">Builder for configuring an application's request pipeline</param>
-        public static void UseSystemAuthorization(this IApplicationBuilder application)
-        {
-            application.UseAuthorization();
         }
 
         /// <summary>

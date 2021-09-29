@@ -4,15 +4,12 @@ using ChatCase.Core.Attributes;
 using ChatCase.Core.Configuration.Configs;
 using ChatCase.Core.Domain.Identity;
 using ChatCase.Core.Infrastructure;
-using ChatCase.Core.Security.JwtSecurity;
 using ChatCase.Domain.Dto.Request.Identity;
 using ChatCase.Domain.Enumerations;
 using ChatCase.Domain.Validation.Identity;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +19,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 
@@ -154,10 +150,6 @@ namespace ChatCase.Framework.Infrastructure.Extensions
             (
                 mongoDbSettings.ConnectionString, mongoDbSettings.Database
             ).AddDefaultTokenProviders();
-
-            JwtTokenDefinitions.LoadFromConfiguration(jwtConfigs);
-            services.ConfigureJwtAuthentication();
-            services.ConfigureJwtAuthorization();
         }
 
         /// <summary>

@@ -12,7 +12,6 @@ using ChatCase.Core.Configuration.Settings;
 using ChatCase.Core.Events;
 using ChatCase.Core.Infrastructure;
 using ChatCase.Core.Infrastructure.DependencyManagement;
-using ChatCase.Core.Security;
 using ChatCase.Repository.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -44,7 +43,6 @@ namespace ChatCase.Framework.Infrastructure
             services.AddScoped<IWebHelper, WebHelper>();
 
             services.AddScoped<ISettingService, SettingService>();
-            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAppUserActivityService, AppUserActivityService>();
 
