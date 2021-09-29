@@ -29,6 +29,5 @@ namespace ChatCase.Business.Services.Logging
         public void Debug<T>(string message, T t) => GetLogger().Debug(message, t);
         public void Error(string message) => GetLogger().Error(message);
         public void Error<T>(string message, T t) => GetLogger().Error(message, t);
-
     }
 }

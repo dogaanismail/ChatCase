@@ -1,5 +1,7 @@
 ﻿using ChatCase.Business.Interfaces.Chatting;
+using ChatCase.Business.Interfaces.Logging;
 using ChatCase.Business.Services.Logging;
+using ChatCase.Core.Domain.Identity;
 using ChatCase.Domain.Common;
 using ChatCase.Domain.Dto.Request.Chatting;
 using ChatCase.Framework.Controllers;
@@ -17,20 +19,23 @@ namespace ChatCase.Api.Controllers
     {
         #region Fields
         private readonly IChattingService _chattingService;
+        private readonly IAppUserActivityService _userActivityService;
 
         #endregion
 
         #region Ctor
-        public ChattingController(IChattingService chattingService)
+        public ChattingController(IChattingService chattingService,
+            IAppUserActivityService userActivityService)
         {
             _chattingService = chattingService;
+            _userActivityService = userActivityService;
         }
         #endregion
 
         #region Methods
 
         [HttpPost("create-group")]
-        [AllowAnonymous]
+        [Authorize]
         public virtual async Task<IActionResult> CreateGroupAsync([FromBody] ChatGroupCreateRequest model)
         {
             LoggerFactory.DatabaseLogManager().Information($"ChattingController- CreateGroupAsync request: {JsonConvert.SerializeObject(model)}");
@@ -48,11 +53,13 @@ namespace ChatCase.Api.Controllers
                 });
             }
 
+            await _userActivityService.InsertAsync(nameof(AppUser), "UserCreatedGroup");
+
             return OkResponse(Result);
         }
 
         [HttpDelete("delete-group/id/{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public virtual async Task<IActionResult> DeleteGroupAsync(string id)
         {
             var serviceResponse = await _chattingService.DeleteGroupAsync(id);
@@ -67,6 +74,8 @@ namespace ChatCase.Api.Controllers
                     Message = string.Join(Environment.NewLine, serviceResponse.Warnings.Select(err => string.Join(Environment.NewLine, err))),
                 });
             }
+
+            await _userActivityService.InsertAsync(nameof(AppUser), "UserDeletedGroup");
 
             return OkResponse(Result);
         }

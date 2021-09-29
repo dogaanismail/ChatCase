@@ -1,8 +1,9 @@
-﻿using System.Collections.Concurrent;
+﻿using ChatCase.Domain.Models.Chatting;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ChatCase.Domain.Models.Chatting
+namespace ChatCase.Business.Services.Chatting
 {
     public class UserInfoInMemory
     {

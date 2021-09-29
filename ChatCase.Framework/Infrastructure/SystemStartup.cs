@@ -30,7 +30,9 @@ namespace ChatCase.Framework.Infrastructure
 
             services.AddBehaviorOptions();
 
-            services.AddSystemDistributedCache();          
+            services.AddSystemDistributedCache();
+
+            services.AddSignalR();
         }
 
         /// <summary>

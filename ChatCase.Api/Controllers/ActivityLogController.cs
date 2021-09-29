@@ -46,7 +46,7 @@ namespace ChatCase.Api.Controllers
         [AllowAnonymous]
         public virtual async Task<IActionResult> GetActivitiesByEmailAsync(string email)
         {
-            var data = await _userActivityService.GetActivitiesByUserName(email);
+            var data = await _userActivityService.GetActivitiesByEmail(email);
 
             return OkResponse(data);
         }

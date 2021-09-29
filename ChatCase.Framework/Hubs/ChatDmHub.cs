@@ -1,10 +1,12 @@
-﻿using ChatCase.Domain.Models.Chatting;
+﻿using ChatCase.Business.Services.Chatting;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ChatCase.Framework.Hubs
 {
+    [Authorize]
     public abstract class ChatDmHub : Hub
     {
         protected UserInfoInMemory _userInfoInMemory;

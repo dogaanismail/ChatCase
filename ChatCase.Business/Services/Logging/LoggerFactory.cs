@@ -4,9 +4,9 @@
     {
         private LoggerFactory()
         {
-
         }
-        static readonly object _lock = new object();
+
+        static readonly object _lock = new();
         private static DatabaseLogger _databaseLogger;
         private static FileLogger _fileLogger;
 

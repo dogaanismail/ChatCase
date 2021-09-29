@@ -52,6 +52,7 @@ namespace ChatCase.Framework.Infrastructure
             services.AddSingleton<IEventPublisher, EventPublisher>();
 
             #region Caching implementations
+
             if (appConfig.DistributedCacheConfig.Enabled)
             {
                 services.AddScoped<ILocker, DistributedCacheManager>();

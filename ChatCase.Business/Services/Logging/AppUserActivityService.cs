@@ -132,7 +132,6 @@ namespace ChatCase.Business.Services.Logging
             return logItem;
         }
 
-
         /// <summary>
         /// Inserts an activity log item
         /// </summary>
@@ -154,7 +153,7 @@ namespace ChatCase.Business.Services.Logging
             if (string.IsNullOrEmpty(email))
                 throw new ArgumentNullException(nameof(email));
 
-            var appUser = await EngineContext.Current.Resolve<IUserService>().GetByUserNameAsync(email);
+            var appUser = await EngineContext.Current.Resolve<IUserService>().GetByEmailAsync(email);
 
             if (appUser != null)
             {

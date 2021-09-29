@@ -1,10 +1,12 @@
 ﻿using ChatCase.Business.Interfaces.Chatting;
 using ChatCase.Domain.Dto.Request.Chatting;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace ChatCase.Framework.Hubs
 {
+    [Authorize]
     public abstract class ChatGroupHub : Hub
     {
         protected readonly IChattingService _chattingService;

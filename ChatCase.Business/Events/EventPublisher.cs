@@ -1,5 +1,7 @@
-﻿using ChatCase.Core.Events;
+﻿using ChatCase.Business.Services.Logging;
+using ChatCase.Core.Events;
 using ChatCase.Core.Infrastructure;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,11 +35,7 @@ namespace ChatCase.Business.Events
                 {
                     try
                     {
-                        //var logger = EngineContext.Current.Resolve<ILogService>();
-                        //if (logger == null)
-                        //    return;
-
-                        //await logger.ErrorAsync(exception.Message, exception);
+                        LoggerFactory.DatabaseLogManager().Error($"EventPublisher- PublishAsync error: {JsonConvert.SerializeObject(exception)}");
                     }
                     catch
                     {

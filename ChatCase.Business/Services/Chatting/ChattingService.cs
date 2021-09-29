@@ -95,6 +95,7 @@ namespace ChatCase.Business.Services.Chatting
                 newEntity.Id = ObjectId.GenerateNewId().ToString();
                 newEntity.Name = createRequest.Name;
                 newEntity.GroupFlag = createRequest.GroupFlag;
+                newEntity.ChatGroupType = createRequest.ChatGroupType;
 
                 await _chatGroupRepository.AddAsync(newEntity);
 

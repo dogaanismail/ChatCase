@@ -1,4 +1,5 @@
 ﻿using ChatCase.Core.Entities;
+using ChatCase.Domain.Enumerations;
 using System.Collections.Generic;
 
 namespace ChatCase.Core.Domain.Chatting
@@ -13,6 +14,7 @@ namespace ChatCase.Core.Domain.Chatting
 
         public string Name { get; set; }
         public string GroupFlag { get; set; }
+        public ChatGroupType ChatGroupType { get; set; }
         public virtual ICollection<Chat> Chats { get; set; }
         public virtual ICollection<ChatGroupUser> ChatGroupMembers { get; set; }
     }

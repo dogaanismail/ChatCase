@@ -26,7 +26,6 @@ namespace ChatCase.Framework.Infrastructure.Extensions
             EngineContext.Current.ConfigureRequestPipeline(application);
         }
 
-
         /// <summary>
         /// Configure exception handling
         /// </summary>
@@ -112,7 +111,6 @@ namespace ChatCase.Framework.Infrastructure.Extensions
                 c.DocExpansion(DocExpansion.None);
             });
         }
-
 
         /// <summary>
         /// Configure routing
