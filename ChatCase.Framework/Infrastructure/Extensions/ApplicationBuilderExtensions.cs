@@ -130,6 +130,7 @@ namespace ChatCase.Framework.Infrastructure.Extensions
             application.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<ChatGroupHub>("/chatHub");
+                endpoints.MapHub<ChatDmHub>("/chatDmHub");
 
                 endpoints.MapControllers();
             });
